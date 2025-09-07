@@ -25,9 +25,9 @@ check_feature_branch() {
 
 # Get feature directory path
 get_feature_dir() {
-    local repo_root="$1"
+    local base="$1"
     local branch="$2"
-    echo "$repo_root/specs/$branch"
+    echo "$base/specs/$branch"
 }
 
 # Get all standard paths for a feature
@@ -35,11 +35,23 @@ get_feature_dir() {
 # Sets: REPO_ROOT, CURRENT_BRANCH, FEATURE_DIR, FEATURE_SPEC, IMPL_PLAN, TASKS
 get_feature_paths() {
     local repo_root=$(get_repo_root)
+    SPECIFY_BASE="${SPECIFY_BASE:-$repo_root}"
     local current_branch=$(get_current_branch)
-    local feature_dir=$(get_feature_dir "$repo_root" "$current_branch")
-    
+
+    local specs_dir="$SPECIFY_BASE/specs"
+    local templates_dir="$SPECIFY_BASE/templates"
+    local memory_dir="$SPECIFY_BASE/memory"
+    local out_dir="$SPECIFY_BASE/out"
+
+    local feature_dir=$(get_feature_dir "$SPECIFY_BASE" "$current_branch")
+
     echo "REPO_ROOT='$repo_root'"
+    echo "SPECIFY_BASE='$SPECIFY_BASE'"
     echo "CURRENT_BRANCH='$current_branch'"
+    echo "SPECS_DIR='$specs_dir'"
+    echo "TEMPLATES_DIR='$templates_dir'"
+    echo "MEMORY_DIR='$memory_dir'"
+    echo "OUT_DIR='$out_dir'"
     echo "FEATURE_DIR='$feature_dir'"
     echo "FEATURE_SPEC='$feature_dir/spec.md'"
     echo "IMPL_PLAN='$feature_dir/plan.md'"
